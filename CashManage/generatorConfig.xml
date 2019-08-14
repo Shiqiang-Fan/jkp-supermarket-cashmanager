@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="C:\Program Files\Java\jre6\lib\ext\mysql-connector-java-5.0.8-bin.jar" />
+	<context id="OracleTables" targetRuntime="Ibatis2Java5">
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/ticketserver" userId="root" password="root" />
+			
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<javaModelGenerator targetPackage="com.joyveb.aide.gen.domain" targetProject="CashManage/src/gens/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="false" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="com.joyveb.aide.gen.dao.ibatis" targetProject="CashManage/src/gens/java">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="SPRING" targetPackage="com.joyveb.aide.gen.dao" implementationPackage="com.joyveb.aide.gen.dao.impl"
+			targetProject="CashManage/src/gens/java">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<table tableName="t_gameinfo" domainObjectName="GameInfo" />
+		<table tableName="t_versioninfo" domainObjectName="VersionInfo" />
+		<table tableName="t_phone_vesioninfo" domainObjectName="PhoneVersionInfo" />
+	</context>
+</generatorConfiguration>

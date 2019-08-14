@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="headValidators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list>
+				<ref bean="versionValidator"/>
+				<ref bean="deviceidValidator"/>
+				<ref bean="commandValidator"/>
+				<ref bean="messageidValidator"/>
+				<ref bean="timestampValidator"/>
+				<!-- <ref bean="bodyMdValidator" /> -->
+			</list>
+		</property>
+	</bean>
+	 
+	<bean id="body1001Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="authCodeValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="body1002Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="barcodeValidator" />
+				<ref bean="prizeTimeValidator"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="body2001Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+			</list>
+		</property>
+	</bean>
+	<bean id="body2002Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+			</list>
+		</property>
+	</bean>
+	<bean id="body2003Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="orderValidator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="body2004Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="receiverUpdateValidator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="body2005Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="receiverUuidValidator" />
+			</list>
+		</property>
+	</bean>
+	<bean id="body2006Validators" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list merge="true">
+				<ref bean="payOrderValidator" />
+			</list>
+		</property>
+	</bean>
+</beans>

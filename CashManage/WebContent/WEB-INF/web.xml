@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>CashManage</display-name>
+	<session-config>
+		<session-timeout>-1</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>login.html</welcome-file>
+		<!-- <welcome-file>index.jsp</welcome-file> -->
+	</welcome-file-list>
+	<context-param>
+		<description>Location of Spring context configuration</description>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:applicationContext*.xml</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>CashManage</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CashManage</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>HandleServlet</servlet-name>
+		<servlet-class>com.joyveb.cashmanage.web.HandleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HandleServlet</servlet-name>
+		<url-pattern>/handle.action</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ScanNotifyServlet</servlet-name>
+		<servlet-class>com.joyveb.cashmanage.web.ScanNotifyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ScanNotifyServlet</servlet-name>
+		<url-pattern>/scan.action</url-pattern>
+	</servlet-mapping>
+
+	<!-- 测试用 -->
+	<servlet>
+		<servlet-name>GetBarcodeServlet</servlet-name>
+		<servlet-class>com.joyveb.cashmanage.web.GetBarcodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBarcodeServlet</servlet-name>
+		<url-pattern>/barcode.action</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>Set Character Encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Set Character Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>CashManage</servlet-name>
+	</filter-mapping>
+	<listener>
+		<listener-class>com.joyveb.cashmanage.web.ApplicationStarter</listener-class>
+	</listener>
+
+</web-app>

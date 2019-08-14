@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 根节点，设置为调试模式 自动重扫描配置文件 间隔为30秒 -->
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+
+	<!-- 定义常量 ，下面可以引用 -->
+	<property name="LOG_HOME" value="/logs" /><!-- log目录 -->
+
+	<!-- 定义控制台输出 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 定义过滤器 相比logger内定义优先级高 -->
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> -->
+		<!-- <level>warn</level> -->
+		<!-- </filter> -->
+		<!-- 定义日志格式 -->
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%date{yyyy-MM-dd HH:mm:ss} %level [%thread] [%file:%line] - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+	<timestamp key="bySecond" datePattern="yyyy-MM-ddHHmmss"/>
+
+	<!-- 定义指定文件名称的输出 此处设定的文件名称是动态设置的 即 每天生成一个文件 用于记录当天的文件信息 -->
+	<!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${LOG_HOME}/jkpcash.log</file>
+		<append>false</append>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%date{yyyy-MM-dd HH:mm:ss} %level [%thread] [%file:%line] - %msg%n
+			</pattern>
+		</layout>
+	</appender> -->
+	
+	<!-- 按照每天生成日志文件 -->
+    <appender name="ROLLINGFILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/jkpcash-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} %level [%thread] [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <!--日志文件最大的大小-->
+       <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <MaxFileSize>30MB</MaxFileSize>
+       </triggeringPolicy>
+    </appender>
+
+	<!-- 单独对指定的日志设定级别，使该日志对象输出地日志级别限定在：“INFO”级别，不受跟级别的限制 目标可以是类或者包 -->
+	<!-- <logger name="com.ztgame.logback.test" level="info"> -->
+	<!-- <appender-ref ref="SIZE_BASE" /> -->
+	<!-- </logger> -->
+	
+	<logger name="jdbc" level="OFF" />
+    <logger name="jdbc.sqlonly" level="info" />
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<!-- <appender-ref ref="FILE" /> -->
+		<appender-ref ref="ROLLINGFILE" />
+	</root>
+</configuration>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 1. 加载数据库配置的属性文件 -->
+	<context:property-placeholder location="classpath:datasource.properties" />
+
+	<!-- 2. 包扫描dao,service -->
+	<context:component-scan base-package="com.joyveb.cashmanage.*" />
+
+	<!-- 3. 数据源dataSource C3p0 -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="checkoutTimeout" value="10000"/>
+	</bean>-->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jndi/cash"></property>
+	</bean>   
+	<bean id="logFlag" class="java.lang.String">
+		<constructor-arg value="true"></constructor-arg>
+	</bean>
+	<bean class="com.joyveb.cashmanage.common.ContextHandler" />
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 扫描jar包引入的dao层 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.joyveb.cashmanage.*,com.joyveb.lbos.restful.*,com.joyveb.auth.restful.*" />
+	</bean>
+	<!-- custom configuration -->
+	<bean id="commands" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map merge="true" key-type="java.lang.String" value-type="com.joyveb.cashmanage.action.Actionable">
+ 				<entry key="1001" value-ref="action_1001" />
+ 				<entry key="1002" value-ref="action_1002" />
+ 				<entry key="1003" value-ref="action_1003" />
+ 				<entry key="1004" value-ref="action_1004" />
+ 				<entry key="2001" value-ref="action_2001" />
+ 				<entry key="2002" value-ref="action_2002" />
+ 				<entry key="2003" value-ref="action_2003" />
+ 				<entry key="2004" value-ref="action_2004" />
+ 				<entry key="2005" value-ref="action_2005" />
+ 				<entry key="2006" value-ref="action_2006" />
+ 				<entry key="2007" value-ref="action_2007" />
+ 				<entry key="2008" value-ref="action_2008" />
+ 				<entry key="2009" value-ref="action_2009" />
+ 				<entry key="2010" value-ref="action_2010" />
+			</map>
+		</property>
+	</bean>
+	<bean id="cacheMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map merge="true" key-type="java.lang.String" value-type="com.joyveb.prizer.cache.Cacheable">
+				<entry key="prizeSessionsCache" value-ref="prizeSessionsCache" />
+			</map>
+		</property>
+	</bean>
+	<!--  quartz -->
+	 <bean id="scheduler" lazy-init="true" autowire="no"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+            </list>
+        </property>
+        <property name="taskExecutor" ref="executor" />
+    </bean>
+	<bean id="executor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="100" />
+		<property name="queueCapacity" value="500" />
+	</bean> 
+	<!-- 改Request method 'POST' not supported -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+     <property name="urlMap">  
+         <map>  
+              <entry key="/请求的文件路径/**" value="myResourceHandler" />  
+         </map>  
+     </property>  
+     <property name="order" value="100000" />         
+</bean>  
+  
+  <!-- 改Request method 'POST' not supported -->
+<bean id="myResourceHandler" name="myResourceHandler"  
+      class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">  
+      <property name="locations" value="/请求的文件路径/" />  
+      <property name="supportedMethods">  
+         <list>  
+            <value>GET</value>  
+            <value>HEAD</value>  
+            <value>POST</value>  
+         </list>  
+     </property>  
+    
+</bean>
+
+<!-- upload -->
+	<!-- <bean id="uoloadCtrl" class="com.joyveb.cashmanage.ctrl" /> -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- set the max upload size100MB -->
+		<property name="maxUploadSize">
+			<value>104857600</value>
+		</property>
+		<property name="maxInMemorySize">
+			<value>1024000</value>
+		</property>
+	</bean>
+
+  <!-- 文件上传 -->
+<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="maxUploadSize" value="52428800"></property>
+        <property name="uploadTempDir" value="temp"></property>
+</bean> -->
+    
+</beans>
