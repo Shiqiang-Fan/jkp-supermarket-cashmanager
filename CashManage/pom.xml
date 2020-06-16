@@ -13,7 +13,7 @@
 	<properties>
 		<build.version>trunk</build.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.1.4.RELEASE</spring.version>
+		<spring.version>5.2.7.RELEASE</spring.version>
 		<project.glassfishDirectory>/home/javaops/glassfish4/glassfish</project.glassfishDirectory>
 		<project.glassfish.user>admin</project.glassfish.user>
 		<project.glassfish.password>123456</project.glassfish.password><!--123456 
